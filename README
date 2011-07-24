@@ -1,11 +1,16 @@
 walletco.py reads the keys (including hidden ones) of a wallet and import them into a new one (which must exist before launching walletco)
 
-As Joric's Pywallet.py (https://github.com/joric/pywallet) doesn't accept --wallet option, you have to use my fork instead: https://github.com/jackjack-jj/pywallet
+As Joric's Pywallet.py (https://github.com/joric/pywallet) doesn't accept --wallet, --label and --reserve options, you have to use my fork instead: https://github.com/jackjack-jj/pywallet
 
 
 
 Usage: walletco.py [options]
 All directories must be entered with their ending path separator
+
+
+Example: ./walletco.py -p /home/johndoe/dev/bitcoin/pywallet/ -W wallet.ew1 -n /home/johndoe/truecrypt/ -N wallet.test
+	will copy all the keys and labels of ~/.bitcoin/wallet.ew1 into /home/johndoe/truecrypt/wallet.test, using /home/johndoe/dev/bitcoin/pywallet/pywallet.py
+
 
 Options:
   --version             show program's version number and exit

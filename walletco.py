@@ -4,8 +4,6 @@
 #
 # walletco.py reads the keys (including hidden ones) of a wallet and import them into a new one
 #
-# Joric's Pywallet.py (https://github.com/joric/pywallet) must be installed to use walletco
-# If your new wallet.dat has been created by a 0.3.25+ client, Joric's pywallet won't import keys, in that case use my fork: https://github.com/jackjack-jj/pywallet
 
 
 import json
@@ -39,7 +37,7 @@ def main():
 
 	parser.add_option("-p", "--pwpath", dest="pwpath", 
 		help="pywallet.py directory (default = ./)",
-		default=".")
+		default="./")
 
 	parser.add_option("-w", "--wpath", dest="wpath",
 		help="old wallet.dat directory (default = bitcoin default)")
@@ -92,15 +90,24 @@ def main():
 	a.close()
 	print("OK")
 
-
-	for value in json_db['keys']:
+	nkeys = len(json_db['keys']);
+	for bkey in json_db['keys']:
 		i+=1
-		os.system(options.pwpath + "pywallet.py --importprivkey=" + value['sec'] + nwalletpathpw + nwalletfilenamepw)
-		disp(1.0*i/len(json_db['keys']))
+		if bkey.has_key('reserve'):
+			reserveOrLabelArg = " --reserve "
+		else:
+			reserveOrLabelArg = ' --label="' + bkey['label'] + '" '
+		os.system(options.pwpath + "pywallet.py --importprivkey=" + bkey['sec'] + nwalletpathpw + nwalletfilenamepw + reserveOrLabelArg)
+		if bkey.has_key('reserve'):
+			print("Reserve")
+		else:
+			print('Label: ' + bkey['label'])
+		print("")
+		disp(1.0*i/nkeys)
 
 
 	print("")
-	print("Done") 
+	print("Done")
 
 
 if __name__ == '__main__':
